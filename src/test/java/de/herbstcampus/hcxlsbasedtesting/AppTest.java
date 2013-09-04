@@ -15,6 +15,11 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.htmlunit.HtmlUnitDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
  * Unit test for simple App.
@@ -62,5 +67,28 @@ public class AppTest {
             result.add(resultRow.toArray());
         }
         return result;
+    }
+
+    @Test
+    public void seleniumTest() throws InterruptedException {
+
+        WebDriver driver = new HtmlUnitDriver();
+        driver.get("http://localhost:8080/HCWebApp/faces/index.xhtml");
+
+       
+        driver.findElement(By.id("in1")).sendKeys(String.valueOf(testRow.get(0)));
+        driver.findElement(By.id("in2")).sendKeys(String.valueOf(testRow.get(1)));
+        driver.findElement(By.id("buttonCalc")).click();
+
+
+        (new WebDriverWait(driver, 10)).until(new ExpectedCondition<Boolean>() {
+            @Override
+            public Boolean apply(WebDriver d) {
+                return (d.findElement(By.id("resultGroup")).getText().trim().length() > 5);
+            }
+        });
+
+        Double actual = Double.valueOf(driver.findElement(By.id("result")).getText());
+        org.junit.Assert.assertEquals((Double)testRow.get(2), actual);
     }
 }
