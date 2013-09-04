@@ -40,7 +40,7 @@ public class AppTest {
     }
 
     @Parameterized.Parameters
-    public static Collection dataProvider() throws IOException {
+    public static Collection herbstcampusXlsProvider() throws IOException {
         List<Object[]> result = new ArrayList<>();
 
         InputStream xlsFile = AppTest.class.getResourceAsStream("/test-cases.xlsx");
